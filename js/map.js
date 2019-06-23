@@ -26,6 +26,32 @@ const map = L.map("mapid", {
 
 lightBackground.addTo(map);
 
+  function dotColor(magnitude) {
+    switch (true) {
+      case magnitude > 5:
+        return "#ea2c2c";
+      case magnitude > 4:
+        return "#ea822c";
+      case magnitude > 3:
+        return "#ee9c00";
+      case magnitude > 2:
+        return "#eecc00";
+      case magnitude > 1:
+        return "#d4ee00";
+      default:
+        return "#98ee00";
+    }
+  }
+
+
+  function dotSize(magnitude) {
+    if (magnitude === 0) {
+      return 1;
+    }
+
+    return magnitude * 3;
+  }
+
 const earthquake = new L.LayerGroup();
 
 
@@ -49,38 +75,12 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geo
     return {
       opacity: 1,
       fillOpacity: 1,
-      fillColor: getColor(feature.properties.mag),
+      fillColor: dotColor(feature.properties.mag),
       color: "#000000",
-      radius: getRadius(feature.properties.mag),
+      radius: dotSize(feature.properties.mag),
       stroke: true,
       weight: 0.5
     };
-  }
-
-  function getColor(magnitude) {
-    switch (true) {
-      case magnitude > 5:
-        return "#ea2c2c";
-      case magnitude > 4:
-        return "#ea822c";
-      case magnitude > 3:
-        return "#ee9c00";
-      case magnitude > 2:
-        return "#eecc00";
-      case magnitude > 1:
-        return "#d4ee00";
-      default:
-        return "#98ee00";
-    }
-  }
-
-
-  function getRadius(magnitude) {
-    if (magnitude === 0) {
-      return 1;
-    }
-
-    return magnitude * 3;
   }
 
 
